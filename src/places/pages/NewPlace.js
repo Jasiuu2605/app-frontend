@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import "./PlaceForm.css";
 
 import Input from "../../shared/components/FormElements/Input";
@@ -30,6 +31,8 @@ const NewPlace = () => {
     false
   );
 
+  const history = useHistory();
+
   const placeSubmitHandler = async (event) => {
     event.preventDefault();
     console.log(auth);
@@ -45,6 +48,7 @@ const NewPlace = () => {
         }),
         { "Content-Type": "application/json" }
       );
+      history.push("/");
     } catch (err) {}
   };
 
