@@ -8,12 +8,12 @@ type CardProps = {
   children?: ReactNode;
 };
 
-const Card: React.FC<CardProps> = ({ className = '', style, children }) => {
+function Card({ className = '', style, children }: CardProps) {
   return (
     <div className={`card ${className}`} style={style}>
       {children}
     </div>
   );
-};
+}
 
 export default Card;
