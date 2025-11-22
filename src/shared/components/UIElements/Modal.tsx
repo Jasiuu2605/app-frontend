@@ -12,7 +12,7 @@ type ModalOverlayProps = {
   headerClass?: string;
   header?: ReactNode;
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
-  contentCLass?: string; // literówka z oryginału zachowana
+  contentClass?: string;
   children?: ReactNode;
   footerClass?: string;
   footer?: ReactNode;
@@ -37,7 +37,7 @@ function ModalOverlay(props: ModalOverlayProps) {
             : (event: FormEvent<HTMLFormElement>) => event.preventDefault()
         }
       >
-        <div className={`modal__content ${props.contentCLass || ''}`}>
+        <div className={`modal__content ${props.contentClass || ''}`}>
           {props.children}
         </div>
         <footer className={`modal__footer ${props.footerClass || ''}`}>
