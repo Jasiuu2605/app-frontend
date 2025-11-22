@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
-import "./Map.css";
+import './Map.css';
+import '../../util/initGoogleMaps';
 
 const Map = (props) => {
   const mapRef = useRef();
@@ -9,21 +10,21 @@ const Map = (props) => {
 
   useEffect(() => {
     async function initMap() {
-      const { Map } = await window.google.maps.importLibrary("maps");
+      const { Map } = await window.google.maps.importLibrary('maps');
       const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
-        "marker"
+        'marker'
       );
 
       const map = new Map(mapRef.current, {
         zoom: zoom,
         center: center,
-        mapId: "DEMO_MAP_ID",
+        mapId: 'DEMO_MAP_ID',
       });
 
       new AdvancedMarkerElement({
         map: map,
         position: center,
-        title: "",
+        title: '',
       });
     }
 
@@ -34,7 +35,7 @@ const Map = (props) => {
       ref={mapRef}
       className={`map ${props.className}`}
       style={props.style}
-      id="map"
+      id='map'
     ></div>
   );
 };
