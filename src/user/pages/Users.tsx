@@ -5,12 +5,11 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
-// typ pojedynczego usera – zgodnie z backendem
 type User = {
   id: string;
   name: string;
   image: string;
-  places: number;
+  places: { id: string }[];
 };
 
 function Users() {
