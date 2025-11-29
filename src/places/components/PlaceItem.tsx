@@ -11,32 +11,47 @@ import { AuthContext } from '../../shared/context/auth-context';
 
 import './PlaceItem.css';
 
-const PlaceItem = (props) => {
-  const auth = useContext(AuthContext);
+type Coordinates = {
+  lat: number;
+  lng: number;
+};
+
+type PlaceItemProps = {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  address: string;
+  creatorId: string;
+  coordinates: Coordinates;
+  onDelete: (id: string) => void;
+};
+
+function PlaceItem(props: PlaceItemProps) {
+  const auth = useContext(AuthContext) as any;
   const [showMap, setShowMap] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const [showConfirmModal, setshowConfirmModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const openMapHandler = () => {
-    console.log('Open map clicked');
+  function openMapHandler() {
     setShowMap(true);
-  };
+  }
 
-  const closeMapHandler = () => {
+  function closeMapHandler() {
     setShowMap(false);
-  };
+  }
 
-  const showDeleteWarningHandler = () => {
-    setshowConfirmModal(true);
-  };
+  function showDeleteWarningHandler() {
+    setShowConfirmModal(true);
+  }
 
-  const cancelDeleteHandler = () => {
-    setshowConfirmModal(false);
-  };
+  function cancelDeleteHandler() {
+    setShowConfirmModal(false);
+  }
 
-  const confirmDeleteHandler = async () => {
-    setshowConfirmModal(false);
+  async function confirmDeleteHandler() {
+    setShowConfirmModal(false);
     try {
       await sendRequest(
         `http://localhost:5001/api/places/${props.id}`,
@@ -48,11 +63,12 @@ const PlaceItem = (props) => {
       );
       props.onDelete(props.id);
     } catch (error) {}
-  };
+  }
 
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
+
       <Modal
         show={showMap}
         onCancel={closeMapHandler}
@@ -65,6 +81,7 @@ const PlaceItem = (props) => {
           <Map center={props.coordinates} zoom={16} />
         </div>
       </Modal>
+
       <Modal
         show={showConfirmModal}
         header='Are you sure?'
@@ -85,27 +102,33 @@ const PlaceItem = (props) => {
           can't be undone thereafter.
         </p>
       </Modal>
+
       <li className='place-item'>
         <Card className='place-item__content'>
           {isLoading && <LoadingSpinner asOverlay />}
+
           <div className='place-item__image'>
             <img
               src={`http://localhost:5001/${props.image}`}
               alt={props.title}
             />
           </div>
+
           <div className='place-item__info'>
             <h2>{props.title}</h2>
             <h3>{props.address}</h3>
             <p>{props.description}</p>
           </div>
+
           <div className='place-item__actions'>
             <Button onClick={openMapHandler} inverse>
               VIEW ON MAP
             </Button>
+
             {auth.userId === props.creatorId && (
               <Button to={`/places/${props.id}`}>EDIT</Button>
             )}
+
             {auth.userId === props.creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
@@ -116,6 +139,6 @@ const PlaceItem = (props) => {
       </li>
     </>
   );
-};
+}
 
 export default PlaceItem;
