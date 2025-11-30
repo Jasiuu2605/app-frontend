@@ -1,17 +1,27 @@
-import React, { useEffect, useRef } from 'react';
+import React, { CSSProperties, useEffect, useRef } from 'react';
 
 import './Map.css';
 import '../../util/initGoogleMaps';
 
-const Map = (props) => {
-  const mapRef = useRef();
+type MapProps = {
+  center: { lat: number; lng: number };
+  zoom: number;
+  className?: string;
+  style?: CSSProperties;
+};
+
+function Map(props: MapProps) {
+  const mapRef = useRef<HTMLDivElement | null>(null);
 
   const { center, zoom } = props;
 
   useEffect(() => {
     async function initMap() {
-      const { Map } = await window.google.maps.importLibrary('maps');
-      const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
+      const google = (window as any).google;
+      if (!google || !mapRef.current) return;
+
+      const { Map } = await google.maps.importLibrary('maps');
+      const { AdvancedMarkerElement } = await google.maps.importLibrary(
         'marker'
       );
 
@@ -30,14 +40,15 @@ const Map = (props) => {
 
     initMap();
   }, [center, zoom]);
+
   return (
     <div
       ref={mapRef}
-      className={`map ${props.className}`}
+      className={`map ${props.className || ''}`}
       style={props.style}
       id='map'
     ></div>
   );
-};
+}
 
 export default Map;
