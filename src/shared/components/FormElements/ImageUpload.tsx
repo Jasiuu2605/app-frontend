@@ -13,9 +13,11 @@ import './ImageUpload.css';
 type ImageUploadProps = {
   id: string;
   center?: boolean;
-  error?: string | null;
+  errorText?: string;
+  error?: string;
   onInput: (id: string, file: File | undefined, isValid: boolean) => void;
 };
+
 
 function ImageUpload(props: ImageUploadProps) {
   const [file, setFile] = useState<File | undefined>(undefined);
