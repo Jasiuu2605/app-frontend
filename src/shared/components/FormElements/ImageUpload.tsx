@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  ChangeEvent,
-  MouseEvent,
-} from 'react';
+import React, { useRef, useState, useEffect, ChangeEvent } from 'react';
 
 import Button from './Button';
 
@@ -17,7 +11,6 @@ type ImageUploadProps = {
   error?: string;
   onInput: (id: string, file: File | undefined, isValid: boolean) => void;
 };
-
 
 function ImageUpload(props: ImageUploadProps) {
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -57,8 +50,7 @@ function ImageUpload(props: ImageUploadProps) {
     props.onInput(props.id, pickedFile, fileIsValid);
   };
 
-  const pickImageHandler = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const pickImageHandler = () => {
     if (filePickerRef.current) {
       filePickerRef.current.click();
     }
