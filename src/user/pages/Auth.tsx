@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext, FormEvent } from 'react';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
@@ -18,7 +17,7 @@ import {
 
 import './Auth.css';
 
-const Auth = () => {
+function Auth() {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -34,7 +33,7 @@ const Auth = () => {
     },
   });
 
-  const authSubmitHandler = async (event) => {
+  async function authSubmitHandler(event: FormEvent) {
     event.preventDefault();
 
     if (isLoginMode) {
@@ -59,6 +58,7 @@ const Auth = () => {
         formData.append('name', formState.inputs.name.value);
         formData.append('password', formState.inputs.password.value);
         formData.append('image', formState.inputs.image.value);
+
         const responseData = await sendRequest(
           'http://localhost:5001/api/users/signup',
           'POST',
@@ -68,10 +68,11 @@ const Auth = () => {
         auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
-  };
+  }
 
-  const switchToSignHandler = () => {
+  function switchToSignHandler() {
     console.log('działa');
+
     if (!isLoginMode) {
       setFormData(
         {
@@ -97,16 +98,20 @@ const Auth = () => {
         false
       );
     }
+
     setIsLoginMode((prevMode) => !prevMode);
-  };
+  }
 
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
+
       <Card className='authentication'>
         {isLoading && <LoadingSpinner asOverlay />}
+
         <h2>Login Required</h2>
         <hr />
+
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
             <Input
@@ -119,6 +124,7 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
+
           {!isLoginMode && (
             <ImageUpload
               id='image'
@@ -127,6 +133,7 @@ const Auth = () => {
               errorText='please provide a image'
             />
           )}
+
           <Input
             element='input'
             id='email'
@@ -146,19 +153,18 @@ const Auth = () => {
             errorText='Please enter a valid email password'
             onInput={inputHandler}
           />
+
           <Button type='submit' disabled={!formState.isValid}>
             {isLoginMode ? 'LOGIN' : 'SIGN UP'}
           </Button>
         </form>
+
         <Button inverse onClick={switchToSignHandler}>
           SWITCH TO {isLoginMode ? 'SIGN UP' : 'LOGIN'} MODE
         </Button>
-        <button onClick={() => console.log('NATYWNY BUTTON DZIAŁA')}>
-          TEST NATIVE BUTTON
-        </button>
       </Card>
     </>
   );
-};
+}
 
 export default Auth;
