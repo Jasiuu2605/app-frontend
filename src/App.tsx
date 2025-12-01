@@ -1,62 +1,64 @@
-import React from "react";
+import React from 'react';
 
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
-} from "react-router-dom/cjs/react-router-dom.min";
+} from 'react-router-dom';
 
-import Users from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
-import UserPlaces from "./places/pages/UserPlaces";
-import MainNavigation from "./shared/components/Navigation/MainNavigation";
-import UpdatePlace from "./places/pages/UpdatePlace";
-import Auth from "./user/pages/Auth";
-import { AuthContext } from "./shared/context/auth-context";
-import { useAuth } from "./shared/hooks/auth-hook";
+import Users from './user/pages/Users';
+import NewPlace from './places/pages/NewPlace';
+import UserPlaces from './places/pages/UserPlaces';
+import MainNavigation from './shared/components/Navigation/MainNavigation';
+import UpdatePlace from './places/pages/UpdatePlace';
+import Auth from './user/pages/Auth';
+import { AuthContext } from './shared/context/auth-context';
+import { useAuth } from './shared/hooks/auth-hook';
 
-const App = () => {
-  let routes;
-
+function App() {
   const { token, login, logout, userId } = useAuth();
+
+  let routes: React.ReactNode;
 
   if (token) {
     routes = (
       <Switch>
-        <Route path="/" exact>
+        <Route path='/' exact>
           <Users />
         </Route>
 
-        <Route path="/:userId/places" exact>
+        <Route path='/:userId/places' exact>
           <UserPlaces />
         </Route>
-        <Route path="/places/new" exact>
+
+        <Route path='/places/new' exact>
           <NewPlace />
         </Route>
-        <Route path="/places/:placeId">
+
+        <Route path='/places/:placeId'>
           <UpdatePlace />
         </Route>
 
-        <Redirect to="/" />
+        <Redirect to='/' />
       </Switch>
     );
   } else {
     routes = (
       <Switch>
-        <Route path="/" exact>
+        <Route path='/' exact>
           <Users />
         </Route>
 
-        <Route path="/:userId/places" exact>
+        <Route path='/:userId/places' exact>
           <UserPlaces />
         </Route>
 
-        <Route path="/auth">
+        <Route path='/auth'>
           <Auth />
         </Route>
 
-        <Redirect to="/auth" />
+        <Redirect to='/auth' />
       </Switch>
     );
   }
@@ -77,6 +79,6 @@ const App = () => {
       </Router>
     </AuthContext.Provider>
   );
-};
+}
 
 export default App;
