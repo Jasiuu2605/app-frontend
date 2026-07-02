@@ -1,61 +1,91 @@
 .button {
-  font: inherit;
-  padding: 0.5rem 1.5rem;
-  border: 1px solid #ff0055;
-  border-radius: 4px;
-  background: #ff0055;
-  color: white;
+  min-height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.7rem 1.15rem;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: #ffffff;
   cursor: pointer;
-  margin-right: 1rem;
+  margin: 0.35rem;
   text-decoration: none;
-  display: inline-block;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.18);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .button:focus {
-  outline: none;
+  outline: 3px solid rgba(15, 118, 110, 0.22);
+  outline-offset: 2px;
 }
 
 .button:hover,
 .button:active {
-  background: #ff4382;
-  border-color: #ff4382;
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 14px 28px rgba(15, 118, 110, 0.24);
+  transform: translateY(-1px);
 }
 
 .button--inverse {
   background: transparent;
-  color: #ff0055;
+  color: var(--color-primary);
+  box-shadow: none;
 }
 
 .button--inverse:hover,
 .button--inverse:active {
-  color: white;
-  background: #ff0055;
+  color: #ffffff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 22px rgba(15, 118, 110, 0.18);
 }
 
 .button--danger {
-  background: #830000;
-  border-color: #830000;
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  box-shadow: 0 10px 22px rgba(220, 38, 38, 0.16);
 }
 
 .button--danger:hover,
 .button--danger:active {
-  background: #f34343;
-  border-color: #f34343;
+  background: #b91c1c;
+  border-color: #b91c1c;
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.22);
 }
 
 .button:disabled,
 .button:hover:disabled,
 .button:active:disabled {
-  background: #ccc;
-  color: #979797;
-  border-color: #ccc;
+  background: #d8e2ea;
+  color: #94a3b8;
+  border-color: #d8e2ea;
+  box-shadow: none;
   cursor: not-allowed;
+  transform: none;
 }
 
 .button--small {
-  font-size: 0.8rem;
+  min-height: 2.2rem;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.75rem;
 }
 
 .button--big {
-  font-size: 1.5rem;
+  min-height: 3.1rem;
+  padding: 0.9rem 1.4rem;
+  font-size: 0.95rem;
 }

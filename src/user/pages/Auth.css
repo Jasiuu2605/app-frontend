@@ -1,15 +1,33 @@
 .authentication__header {
-  color: white;
+  margin: 0 0 1rem;
+  color: var(--color-text);
   text-align: center;
 }
 
+.authentication__header h2 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
 .authentication {
-  width: 90%;
-  max-width: 25rem;
-  margin: 7rem auto;
+  width: min(100%, 27rem);
+  margin: 4rem auto;
+  padding: 1.5rem;
   text-align: center;
 }
 
 .authentication form {
   margin-bottom: 1rem;
+}
+
+.authentication .button {
+  width: 100%;
+  margin: 0.35rem 0;
+}
+
+.authentication .button--inverse {
+  width: auto;
+  margin-top: 0.75rem;
 }
