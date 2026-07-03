@@ -8,6 +8,8 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
+import './UserPlaces.css';
+
 type Coordinates = {
   lat: number;
   lng: number;
@@ -29,6 +31,7 @@ type RouteParams = {
 
 function UserPlaces() {
   const [loadedPlaces, setLoadedPlaces] = useState<Place[] | undefined>();
+  const [searchTerm, setSearchTerm] = useState('');
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const { userId } = useParams<RouteParams>();
@@ -50,23 +53,63 @@ function UserPlaces() {
     setLoadedPlaces((prevPlaces) =>
       prevPlaces
         ? prevPlaces.filter((place) => place.id !== deletedPlaceId)
-        : []
+        : [],
+    );
+  }
+
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  const visiblePlaces = loadedPlaces?.filter((place) => {
+    const searchableText = `${place.title} ${place.address} ${place.description}`;
+    return searchableText.toLowerCase().includes(normalizedSearchTerm);
+  });
+
+  let content: React.ReactNode = null;
+
+  if (isLoading) {
+    content = (
+      <div className='center'>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!isLoading && loadedPlaces) {
+    content = (
+      <>
+        <section className='places-toolbar'>
+          <input
+            type='search'
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder='Search places...'
+            aria-label='Search places'
+          />
+
+          <p className='places-toolbar__count'>
+            {visiblePlaces?.length || 0}{' '}
+            {visiblePlaces?.length === 1 ? 'place' : 'places'} found
+          </p>
+        </section>
+
+        {visiblePlaces && visiblePlaces.length > 0 ? (
+          <PlaceList
+            items={visiblePlaces}
+            onDeletePlace={placeDeletedHandler}
+          />
+        ) : (
+          <div className='center'>
+            <h2>No places match your search.</h2>
+          </div>
+        )}
+      </>
     );
   }
 
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-
-      {isLoading && (
-        <div className='center'>
-          <LoadingSpinner />
-        </div>
-      )}
-
-      {!isLoading && loadedPlaces && (
-        <PlaceList items={loadedPlaces} onDeletePlace={placeDeletedHandler} />
-      )}
+      {content}
     </>
   );
 }
