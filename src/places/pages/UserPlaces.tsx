@@ -32,6 +32,7 @@ type RouteParams = {
 function UserPlaces() {
   const [loadedPlaces, setLoadedPlaces] = useState<Place[] | undefined>();
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'title' | 'address'>('title');
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const { userId } = useParams<RouteParams>();
@@ -59,10 +60,18 @@ function UserPlaces() {
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
-  const visiblePlaces = loadedPlaces?.filter((place) => {
-    const searchableText = `${place.title} ${place.address} ${place.description}`;
-    return searchableText.toLowerCase().includes(normalizedSearchTerm);
-  });
+  const visiblePlaces = loadedPlaces
+    ?.filter((place) => {
+      const searchableText = `${place.title} ${place.address} ${place.description}`;
+      return searchableText.toLowerCase().includes(normalizedSearchTerm);
+    })
+    .sort((firstPlace, secondPlace) => {
+      if (sortBy === 'address') {
+        return firstPlace.address.localeCompare(secondPlace.address);
+      }
+
+      return firstPlace.title.localeCompare(secondPlace.title);
+    });
 
   let content: React.ReactNode = null;
 
@@ -85,6 +94,17 @@ function UserPlaces() {
             placeholder='Search places...'
             aria-label='Search places'
           />
+
+          <select
+            value={sortBy}
+            onChange={(event) =>
+              setSortBy(event.target.value as 'title' | 'address')
+            }
+            aria-label='Sort places'
+          >
+            <option value='title'>Title A-Z</option>
+            <option value='address'>Address A-Z</option>
+          </select>
 
           <p className='places-toolbar__count'>
             {visiblePlaces?.length || 0}{' '}

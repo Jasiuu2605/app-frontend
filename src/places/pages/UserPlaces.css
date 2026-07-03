@@ -6,7 +6,8 @@
   gap: 0.75rem;
 }
 
-.places-toolbar input {
+.places-toolbar input,
+.places-toolbar select {
   width: 100%;
   min-height: 2.8rem;
   border: 1px solid var(--color-border);
@@ -19,7 +20,8 @@
   box-shadow: var(--shadow-card);
 }
 
-.places-toolbar input:focus {
+.places-toolbar input:focus,
+.places-toolbar select:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
@@ -35,7 +37,7 @@
 
 @media (min-width: 640px) {
   .places-toolbar {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 12rem auto;
     align-items: center;
   }
 }
