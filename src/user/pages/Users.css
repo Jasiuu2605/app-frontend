@@ -86,9 +86,17 @@
   box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
 }
 
+.users-toolbar__count {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 @media (min-width: 640px) {
   .users-toolbar {
-    grid-template-columns: 1fr 12rem;
+    grid-template-columns: 1fr 12rem auto;
     align-items: center;
   }
 }

@@ -76,6 +76,10 @@ function Users() {
             <option value='name'>Name A-Z</option>
             <option value='places'>Most places</option>
           </select>
+          <p className='users-toolbar__count'>
+            {visibleUsers?.length || 0}{' '}
+            {visibleUsers?.length === 1 ? 'user' : 'users'} found
+          </p>
         </section>
 
         {visibleUsers && visibleUsers.length > 0 ? (
