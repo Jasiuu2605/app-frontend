@@ -20,6 +20,7 @@ function Users() {
   const [loadedUsers, setLoadedUsers] = useState<User[] | undefined>();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'name' | 'places'>('name');
 
   useEffect(() => {
     async function fetchUsers() {
@@ -34,9 +35,15 @@ function Users() {
 
   const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
-  const filteredUsers = loadedUsers?.filter((user) =>
-    user.name.toLowerCase().includes(normalizedSearchTerm),
-  );
+  const visibleUsers = loadedUsers
+    ?.filter((user) => user.name.toLowerCase().includes(normalizedSearchTerm))
+    .sort((firstUser, secondUser) => {
+      if (sortBy === 'places') {
+        return secondUser.places.length - firstUser.places.length;
+      }
+
+      return firstUser.name.localeCompare(secondUser.name);
+    });
 
   let content: React.ReactNode = null;
 
@@ -59,10 +66,20 @@ function Users() {
             placeholder='Search users...'
             aria-label='Search users'
           />
+          <select
+            value={sortBy}
+            onChange={(event) =>
+              setSortBy(event.target.value as 'name' | 'places')
+            }
+            aria-label='Sort users'
+          >
+            <option value='name'>Name A-Z</option>
+            <option value='places'>Most places</option>
+          </select>
         </section>
 
-        {filteredUsers && filteredUsers.length > 0 ? (
-          <UsersList items={filteredUsers} />
+        {visibleUsers && visibleUsers.length > 0 ? (
+          <UsersList items={visibleUsers} />
         ) : (
           <div className='center'>
             <h2>No users match your search.</h2>
