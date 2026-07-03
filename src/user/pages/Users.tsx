@@ -7,6 +7,8 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
+import './Users.css';
+
 type User = {
   id: string;
   name: string;
@@ -17,6 +19,7 @@ type User = {
 function Users() {
   const [loadedUsers, setLoadedUsers] = useState<User[] | undefined>();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     async function fetchUsers() {
@@ -29,17 +32,50 @@ function Users() {
     fetchUsers();
   }, [sendRequest]);
 
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
+
+  const filteredUsers = loadedUsers?.filter((user) =>
+    user.name.toLowerCase().includes(normalizedSearchTerm),
+  );
+
+  let content: React.ReactNode = null;
+
+  if (isLoading) {
+    content = (
+      <div className='center'>
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (!isLoading && loadedUsers) {
+    content = (
+      <>
+        <section className='users-toolbar'>
+          <input
+            type='search'
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder='Search users...'
+            aria-label='Search users'
+          />
+        </section>
+
+        {filteredUsers && filteredUsers.length > 0 ? (
+          <UsersList items={filteredUsers} />
+        ) : (
+          <div className='center'>
+            <h2>No users match your search.</h2>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
-
-      {isLoading && (
-        <div className='center'>
-          <LoadingSpinner />
-        </div>
-      )}
-
-      {!isLoading && loadedUsers && <UsersList items={loadedUsers} />}
+      {content}
     </>
   );
 }
