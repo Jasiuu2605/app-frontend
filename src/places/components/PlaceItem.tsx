@@ -1,5 +1,7 @@
 import React, { useState, useContext } from 'react';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import Card from '../../shared/components/UIElements/Card';
 import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
@@ -54,12 +56,12 @@ function PlaceItem(props: PlaceItemProps) {
     setShowConfirmModal(false);
     try {
       await sendRequest(
-        `http://localhost:5001/api/places/${props.id}`,
+        `${API_BASE_URL}/api/places/${props.id}`,
         'DELETE',
         null,
         {
           Authorization: 'Bearer ' + auth.token,
-        }
+        },
       );
       props.onDelete(props.id);
     } catch (error) {}
@@ -108,10 +110,7 @@ function PlaceItem(props: PlaceItemProps) {
           {isLoading && <LoadingSpinner asOverlay />}
 
           <div className='place-item__image'>
-            <img
-              src={`http://localhost:5001/${props.image}`}
-              alt={props.title}
-            />
+            <img src={`${API_BASE_URL}/${props.image}`} alt={props.title} />
           </div>
 
           <div className='place-item__info'>

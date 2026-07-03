@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import UsersList from '../components/UsersList/UsersList';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
@@ -19,9 +21,7 @@ function Users() {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const responseData = await sendRequest(
-          'http://localhost:5001/api/users'
-        );
+        const responseData = await sendRequest(`${API_BASE_URL}/api/users`);
         setLoadedUsers(responseData.users as User[]);
       } catch (error) {}
     }

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import PlaceList from '../components/PlaceList';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -35,7 +37,7 @@ function UserPlaces() {
     async function fetchPlaces() {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5001/api/places/user/${userId}`
+          `${API_BASE_URL}/api/places/user/${userId}`,
         );
         setLoadedPlaces(responseData.places as Place[]);
       } catch (error) {}

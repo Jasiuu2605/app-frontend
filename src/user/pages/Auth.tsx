@@ -2,6 +2,8 @@ import React, { useState, useContext, FormEvent } from 'react';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import Card from '../../shared/components/UIElements/Card';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
@@ -39,7 +41,7 @@ function Auth() {
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
-          'http://localhost:5001/api/users/login',
+          `${API_BASE_URL}/api/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -47,7 +49,7 @@ function Auth() {
           }),
           {
             'Content-Type': 'application/json',
-          }
+          },
         );
         auth.login(responseData.userId, responseData.token);
       } catch (err) {}
@@ -60,9 +62,9 @@ function Auth() {
         formData.append('image', formState.inputs.image.value);
 
         const responseData = await sendRequest(
-          'http://localhost:5001/api/users/signup',
+          `${API_BASE_URL}/api/users/signup`,
           'POST',
-          formData
+          formData,
         );
 
         auth.login(responseData.userId, responseData.token);
@@ -80,7 +82,7 @@ function Auth() {
           name: undefined,
           image: undefined,
         },
-        formState.inputs.email.isValid && formState.inputs.password.isValid
+        formState.inputs.email.isValid && formState.inputs.password.isValid,
       );
     } else {
       setFormData(
@@ -95,7 +97,7 @@ function Auth() {
             isValid: false,
           },
         },
-        false
+        false,
       );
     }
 

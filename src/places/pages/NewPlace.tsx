@@ -1,6 +1,8 @@
 import React, { useContext, FormEvent } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import './PlaceForm.css';
 
 import Input from '../../shared/components/FormElements/Input';
@@ -39,7 +41,7 @@ function NewPlace() {
         isValid: false,
       },
     },
-    false
+    false,
   );
 
   const history = useHistory();
@@ -52,7 +54,7 @@ function NewPlace() {
       formData.append('description', formState.inputs.description.value);
       formData.append('address', formState.inputs.address.value);
       formData.append('image', formState.inputs.image.value);
-      await sendRequest('http://localhost:5001/api/places/', 'POST', formData, {
+      await sendRequest(`${API_BASE_URL}/api/places/`, 'POST', formData, {
         Authorization: 'Bearer ' + auth.token,
       });
       history.push('/');

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext, FormEvent } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
+import { API_BASE_URL } from '../../shared/util/config';
+
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
@@ -42,14 +44,14 @@ function UpdatePlace() {
         isValid: false,
       },
     },
-    false
+    false,
   );
 
   useEffect(() => {
     async function fetchPlace() {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5001/api/places/${placeId}`
+          `${API_BASE_URL}/api/places/${placeId}`,
         );
 
         setLoadedPlace({
@@ -68,7 +70,7 @@ function UpdatePlace() {
               isValid: true,
             },
           },
-          true
+          true,
         );
       } catch (error) {}
     }
@@ -80,7 +82,7 @@ function UpdatePlace() {
     event.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:5001/api/places/${placeId}`,
+        `${API_BASE_URL}/api/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
@@ -89,7 +91,7 @@ function UpdatePlace() {
         {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + auth.token,
-        }
+        },
       );
       history.push('/' + auth.userId + '/places');
     } catch (error) {}
