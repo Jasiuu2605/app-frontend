@@ -1,34 +1,16 @@
-# MERN Places – Frontend (React + TypeScript)
+# MERN Places - Frontend
 
-Frontend aplikacji MERN służącej do tworzenia, udostępniania i zarządzania miejscami użytkowników. Projekt został przepisany z JavaScript na TypeScript, wykorzystując React 16.11, Context API, custom hooki oraz integrację z Google Maps API.
+Frontend aplikacji MERN do tworzenia, udostepniania i zarzadzania miejscami uzytkownikow. Aplikacja korzysta z React, TypeScript, React Router v5, Context API, custom hookow oraz Google Maps JavaScript API.
 
----
+## Funkcjonalnosci
 
-## Najważniejsze funkcjonalności
-
-### Autoryzacja i zarządzanie sesją
-- Logowanie i rejestracja z uploadem zdjęcia
-- Token przechowywany w localStorage
-- Auto-login po odświeżeniu strony
-- Auto-logout po wygaśnięciu tokena
-- Chronione ścieżki
-
-### Zarządzanie miejscami
-- Tworzenie nowego miejsca (walidacja formularza + upload zdjęcia)
-- Edycja i usuwanie miejsc
-- Podgląd lokalizacji na mapie (Google Maps API)
-- Lista miejsc konkretnego użytkownika
-
-### Custom hooki
-- useAuth – login, logout, auto-logout
-- useHttpClient – requesty, błędy, loading, abort
-- useForm – walidacja i zarządzanie formularzami
-
-### Komponenty UI
-- Card, Button, Modal, Backdrop, LoadingSpinner
-- Nawigacja: MainNavigation, SideDrawer, NavLinks
-
----
+- Logowanie i rejestracja z uploadem zdjecia.
+- Token przechowywany w `localStorage`.
+- Auto-login po odswiezeniu strony.
+- Auto-logout po wygasnieciu tokena.
+- Lista uzytkownikow i ich miejsc.
+- Tworzenie, edycja i usuwanie miejsc.
+- Podglad lokalizacji na mapie Google.
 
 ## Technologie
 
@@ -39,81 +21,91 @@ Frontend aplikacji MERN służącej do tworzenia, udostępniania i zarządzania 
 - Google Maps JavaScript API
 - Fetch API
 - CSS
-- Custom Hooks
 
----
+## Wymagania
 
-## Struktura projektu
-
-src/
- ├── shared/
- │   ├── components/
- │   │   ├── Navigation/
- │   │   ├── FormElements/
- │   │   └── UIElements/
- │   ├── context/
- │   ├── hooks/
- │   └── util/
- ├── user/
- ├── places/
- ├── App.tsx
- └── index.tsx
-
----
+- Node.js
+- Dzialajacy backend pod `http://localhost:5001`
+- Frontendowy klucz Google Maps z wlaczonym `Maps JavaScript API`
 
 ## Instalacja
 
-1. Klonuj repozytorium:
-   git clone <URL_REPO>
-   cd app-frontend
+1. Zainstaluj zaleznosci:
 
-2. Instalacja zależności:
+   ```bash
    npm install
+   ```
 
-3. Dodanie klucza API Google:
-   Utwórz plik public/.env
+2. Skopiuj przykladowe zmienne srodowiskowe:
 
-   Zawartość:
-   REACT_APP_GOOGLE_API_KEY="TWÓJ_KLUCZ"
+   ```bash
+   cp .env.example .env
+   ```
+
+3. Uzupelnij `.env`:
+
+   ```env
+   REACT_APP_GOOGLE_API_KEY=your_frontend_google_maps_key
    BABEL_DISABLE_CACHE=1
+   ```
 
-4. Uruchom projekt:
+   Klucz frontendowy Google powinien miec ograniczenie aplikacji ustawione na `HTTP referrers`, np.:
+
+   ```txt
+   http://localhost:3000/*
+   http://127.0.0.1:3000/*
+   ```
+
+4. Uruchom aplikacje:
+
+   ```bash
    npm start
+   ```
 
-Aplikacja dostępna pod:
+Aplikacja bedzie dostepna pod:
+
+```txt
 http://localhost:3000
-
----
+```
 
 ## Backend API
 
-Aplikacja korzysta z backendu pod adresem:
+Frontend oczekuje backendu pod adresem:
 
-http://localhost:5001/api/
+```txt
+http://localhost:5001/api
+```
 
-Główne endpointy:
-- POST /users/login
-- POST /users/signup
-- GET /users
-- GET /places/user/:uid
-- POST /places
-- PATCH /places/:pid
-- DELETE /places/:pid
+Glowne endpointy:
 
----
+- `POST /users/login`
+- `POST /users/signup`
+- `GET /users`
+- `GET /places/user/:uid`
+- `POST /places`
+- `PATCH /places/:pid`
+- `DELETE /places/:pid`
 
-## Decyzje projektowe (skrócone)
+## Struktura projektu
 
-- Routing v5 — kompatybilność z istniejącą architekturą
-- TypeScript — bezpieczeństwo typów i łatwiejszy rozwój
-- Custom Hooks — zamiast Redux, bo globalny stan jest niewielki
-- Google Maps przez importLibrary() — nowoczesne ładowanie modułowe
-- Własny system formularzy z useForm — pełna kontrola logiki
+```txt
+src/
+  shared/
+    components/
+      Navigation/
+      FormElements/
+      UIElements/
+    context/
+    hooks/
+    util/
+  user/
+  places/
+  App.tsx
+  index.tsx
+```
 
----
+## Uwagi techniczne
 
-## Autor
-Jan Banczerowski
-
-## Licencja
-MIT
+- Projekt korzysta jeszcze z `react-scripts`, wiec zmienne dostepne w przegladarce musza zaczynac sie od `REACT_APP_`.
+- `react-error-overlay` jest przypiety do `6.0.9`, zeby uniknac bledu `ReferenceError: process is not defined` w dev serverze.
+- Backend ma osobny klucz Google do `Geocoding API`; nie uzywaj go w frontendzie.
