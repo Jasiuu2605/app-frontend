@@ -27,6 +27,8 @@ type PlaceItemProps = {
   creatorId: string;
   coordinates: Coordinates;
   onDelete: (id: string) => void;
+  isFavorite: boolean;
+  onToggleFavorite: (id: string) => void;
 };
 
 function PlaceItem(props: PlaceItemProps) {
@@ -42,6 +44,10 @@ function PlaceItem(props: PlaceItemProps) {
 
   function closeMapHandler() {
     setShowMap(false);
+  }
+
+  function toggleFavoriteHandler() {
+    props.onToggleFavorite(props.id);
   }
 
   function showDeleteWarningHandler() {
@@ -123,6 +129,14 @@ function PlaceItem(props: PlaceItemProps) {
             <Button onClick={openMapHandler} inverse>
               VIEW ON MAP
             </Button>
+            {auth.isLoggedIn && (
+              <Button
+                onClick={toggleFavoriteHandler}
+                inverse={!props.isFavorite}
+              >
+                {props.isFavorite ? 'SAVED' : 'SAVE'}
+              </Button>
+            )}
 
             {auth.userId === props.creatorId && (
               <Button to={`/places/${props.id}`}>EDIT</Button>

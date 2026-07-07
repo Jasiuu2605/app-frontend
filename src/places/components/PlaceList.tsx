@@ -23,6 +23,8 @@ type Place = {
 
 type PlaceListProps = {
   items: Place[];
+  favoritePlaceIds: string[];
+  onToggleFavoritePlace: (id: string) => void;
   onDeletePlace: (id: string) => void;
 };
 
@@ -50,6 +52,8 @@ function PlaceList(props: PlaceListProps) {
           address={place.address}
           creatorId={place.creator}
           coordinates={place.location}
+          isFavorite={props.favoritePlaceIds.includes(place.id)}
+          onToggleFavorite={props.onToggleFavoritePlace}
           onDelete={props.onDeletePlace}
         />
       ))}

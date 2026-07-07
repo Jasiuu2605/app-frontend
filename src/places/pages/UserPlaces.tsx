@@ -29,10 +29,20 @@ type RouteParams = {
   userId: string;
 };
 
+const FAVORITE_PLACES_STORAGE_KEY = 'favoritePlaceIds';
+
 function UserPlaces() {
   const [loadedPlaces, setLoadedPlaces] = useState<Place[] | undefined>();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'title' | 'address'>('title');
+  const [favoritePlaceIds, setFavoritePlaceIds] = useState<string[]>(() => {
+    const storedFavoritePlaceIds = localStorage.getItem(
+      FAVORITE_PLACES_STORAGE_KEY,
+    );
+
+    return storedFavoritePlaceIds ? JSON.parse(storedFavoritePlaceIds) : [];
+  });
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const { userId } = useParams<RouteParams>();
@@ -50,11 +60,28 @@ function UserPlaces() {
     fetchPlaces();
   }, [sendRequest, userId]);
 
+  useEffect(() => {
+    localStorage.setItem(
+      FAVORITE_PLACES_STORAGE_KEY,
+      JSON.stringify(favoritePlaceIds),
+    );
+  }, [favoritePlaceIds]);
+
   function placeDeletedHandler(deletedPlaceId: string) {
     setLoadedPlaces((prevPlaces) =>
       prevPlaces
         ? prevPlaces.filter((place) => place.id !== deletedPlaceId)
         : [],
+    );
+  }
+
+  function toggleFavoritePlaceHandler(placeId: string) {
+    setFavoritePlaceIds((prevFavoritePlaceIds) =>
+      prevFavoritePlaceIds.includes(placeId)
+        ? prevFavoritePlaceIds.filter(
+            (favoritePlaceId) => favoritePlaceId !== placeId,
+          )
+        : [...prevFavoritePlaceIds, placeId],
     );
   }
 
@@ -123,6 +150,8 @@ function UserPlaces() {
         {visiblePlaces && visiblePlaces.length > 0 ? (
           <PlaceList
             items={visiblePlaces}
+            favoritePlaceIds={favoritePlaceIds}
+            onToggleFavoritePlace={toggleFavoritePlaceHandler}
             onDeletePlace={placeDeletedHandler}
           />
         ) : (
