@@ -66,6 +66,15 @@ function Users() {
             placeholder='Search users...'
             aria-label='Search users'
           />
+          {searchTerm && (
+            <button
+              type='button'
+              className='users-toolbar__clear'
+              onClick={() => setSearchTerm('')}
+            >
+              Clear
+            </button>
+          )}
           <select
             value={sortBy}
             onChange={(event) =>

@@ -94,7 +94,15 @@ function UserPlaces() {
             placeholder='Search places...'
             aria-label='Search places'
           />
-
+          {searchTerm && (
+            <button
+              type='button'
+              className='places-toolbar__clear'
+              onClick={() => setSearchTerm('')}
+            >
+              Clear
+            </button>
+          )}
           <select
             value={sortBy}
             onChange={(event) =>
